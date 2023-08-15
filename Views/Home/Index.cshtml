@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@if (!User.Identity.IsAuthenticated)
+{
+
+<div style="margin-top: 1rem">
+    @using (Html.BeginForm("SignIn", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="col-md-12" style="margin:10px">
+            <select class="form-control" name="TipoIdentificacion" required>
+                <option value="EM">Correo electrónico</option>
+                <option value="CC">Cédula de ciudadanía</option>
+            </select>
+        </div>
+        <div class="col-md-12" style="margin:10px">
+            <input type="text" class="form-control" name="Identificacion" placeholder="Identificación" required>
+        </div>
+        <div class="col-md-12" style="margin:10px">
+            <button class="btn btn-primary" type="submit" name="Accion" value="login">
+                Iniciar sesión
+            </button>
+            <button class="btn btn-primary" type="submit" name="Accion" value="register">
+                Registrar
+            </button>
+        </div>
+    }
+</div>
+}
+else
+{
+
+    var userClaims = User.Identity as System.Security.Claims.ClaimsIdentity;
+    var user = userClaims.FindFirst("aud");
+
+    <span><br />Hello <b style="font-size:2rem">@user</b> </span>
+    <br />
+    <br />
+    @Html.ActionLink("See Your Claims", "Index", "Claims", null, new { @class = "btn btn-primary" })
+    <br />
+    <br />
+    @Html.ActionLink("Sign out", "SignOut", "Home", null, new { @class = "btn btn-danger" })
+}
+
+@if (!string.IsNullOrWhiteSpace(Request.QueryString["errormessage"]))
+{
+    <div style="background-color:red;color:white;font-weight: bold;">Error: @Request.QueryString["errormessage"]</div>
+}

@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "User autorized";
+    var userClaims = User.Identity as System.Security.Claims.ClaimsIdentity;
+    var user = userClaims.FindFirst("aud");
+
+}
+<h2>@ViewBag.Title.</h2>
+<h3 style="margin-bottom:5rem">Welcome <b>@user</b></h3>
+
+<p>Use this area to provide additional information.</p>
+
+
+@Html.ActionLink("See Your Claims", "Index", "Claims")
